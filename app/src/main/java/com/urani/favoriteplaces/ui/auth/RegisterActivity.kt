@@ -6,6 +6,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.urani.favoriteplaces.MainActivity
 import com.urani.favoriteplaces.R
 import com.urani.favoriteplaces.databinding.ActivityRegisterBinding
@@ -17,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
+    private lateinit var database: DatabaseReference
 
     private lateinit var mAuth: FirebaseAuth
 
@@ -39,43 +43,61 @@ class RegisterActivity : AppCompatActivity() {
     fun onRegisterButtonClick(view: View) {
         if (validateFields()) {
             binding.btnRegister.isEnabled = false
-            val user = User(
-                binding.firstNameEditText.text.toString().trim(),
-                binding.secondNameEditText.text.toString().trim(),
-                binding.emailEditText.text.toString()
-            )
 
             binding.progressBar.visible()
             val email = binding.emailEditText.text.toString().trim()
-            val password =  binding.passwordEditText.text.toString()
+            val password = binding.passwordEditText.text.toString()
 
             mAuth.createUserWithEmailAndPassword(
-                email,
-                password
+                    email,
+                    password
             )
-                .addOnCompleteListener { task ->
-                    binding.progressBar.visibility = View.GONE
-                    if (task.isSuccessful) {
-                        toast("created account successfully !")
-                        task.result?.user?.let {
-                            val firebaseUser  = it
-                            val intent = Intent(this@RegisterActivity, MainActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            intent.putExtra("user_id", firebaseUser.uid)
-                            intent.putExtra("email", email)
-                            startActivity(intent)
-                            finish()
-                        }
+                    .addOnCompleteListener { task ->
+                        binding.progressBar.visibility = View.GONE
+                        if (task.isSuccessful) {
+                            toast("created account successfully !")
+                            addNewUser()
 
-                    } else {
-                        toast("failed to Authenticate !")
+                        } else {
+                            toast("failed to Authenticate !")
+                        }
                     }
-                }
 
 
         } else {
             binding.btnRegister.isEnabled = true
         }
+    }
+
+
+    private fun addNewUser() {
+
+        binding.btnRegister.isEnabled = true
+        //add data to the "users" node
+        val userId = FirebaseAuth.getInstance().currentUser.uid
+        val mUser = User(binding.firstNameEditText.text.toString().trim(),
+                binding.secondNameEditText.text.toString().trim(),
+                userId)
+
+        database = Firebase.database.reference
+
+        //insert into users node
+        val email = binding.emailEditText.text.toString().trim()
+        database.child(getString(R.string.node_users))
+                .child(userId)
+                .setValue(mUser)
+                .addOnSuccessListener {
+                    val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    intent.putExtra("user_id", userId)
+                    intent.putExtra("email", email)
+                    startActivity(intent)
+                    finish()
+                }
+                .addOnFailureListener {
+                    val a = it
+                }
+
     }
 
 

@@ -1,7 +1,7 @@
 package com.urani.favoriteplaces.models
 
 data class User(
-    var name: String,
-    var lastname: String,
-    var email: String
+    var firstName: String,
+    var lastName: String,
+    var userId: String
 )

@@ -17,4 +17,7 @@
     <string name="please_fill_password">Please fill password</string>
     <string name="invalid_email_message">Please enter valid email</string>
     <string name="invalid_password_message">Please enter valid password</string>
+
+
+    <string name="node_users">users</string>
 </resources>
