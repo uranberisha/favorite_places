@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "65982711738",
+    "project_id": "favoriteplaces-6c2f5",
+    "storage_bucket": "favoriteplaces-6c2f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65982711738:android:75a22cbe744be8f46d3f83",
+        "android_client_info": {
+          "package_name": "com.urani.favoriteplaces"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "65982711738-0skff1dpq60dmo6u9cbgat27prklq3rt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.urani.favoriteplaces",
+            "certificate_hash": "bc5572ff65cbadc90f39a88dfb2eee2e6a074630"
+          }
+        },
+        {
+          "client_id": "65982711738-m882ue68sbh0brap059q9hjhd5sp2pqe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBX0r5xiFa5RO3zOaT3AfaEfq6ZfLiOSgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "65982711738-m882ue68sbh0brap059q9hjhd5sp2pqe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

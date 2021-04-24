@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.auth.RegisterActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/sign_up_constrain_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/headerText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/register"
+                android:textColor="@color/black_russian"
+                android:textSize="@dimen/header_first_text_size"
+                app:layout_constraintBottom_toBottomOf="@+id/imgBack"
+                app:layout_constraintTop_toTopOf="@+id/imgBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <ImageView
+                android:id="@+id/imgBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="20dp"
+                android:contentDescription="@string/todo"
+                android:onClick="onBackClickButton"
+                android:padding="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/ic_back_arrow" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/firstNameEditText"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/login_button_height"
+                android:layout_marginStart="@dimen/login_button_margins"
+                android:layout_marginTop="48dp"
+                android:layout_marginEnd="@dimen/login_button_margins"
+                android:background="@drawable/rounded_background_white_1dp_with_grey_borders"
+                android:maxLength="40"
+                android:hint="@string/first_name"
+                android:inputType="textCapSentences"
+                android:paddingStart="@dimen/edit_text_start_padding"
+                android:paddingEnd="5dp"
+                android:textColor="@color/black_russian"
+                android:textColorHint="@color/heather"
+                android:textSize="@dimen/edit_txt_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/headerText" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/secondNameEditText"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/login_button_height"
+                android:layout_marginStart="@dimen/login_button_margins"
+                android:layout_marginTop="@dimen/margin_between_edit_texts"
+                android:layout_marginEnd="@dimen/login_button_margins"
+                android:background="@drawable/rounded_background_white_1dp_with_grey_borders"
+                android:ems="10"
+                android:maxLength="40"
+                android:hint="@string/last_name"
+                android:inputType="textCapSentences"
+                android:paddingStart="@dimen/edit_text_start_padding"
+                android:paddingEnd="5dp"
+                android:textColor="@color/black_russian"
+                android:textColorHint="@color/heather"
+                android:textSize="@dimen/edit_txt_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/firstNameEditText" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/emailEditText"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/login_button_height"
+                android:layout_marginStart="@dimen/login_button_margins"
+                android:layout_marginTop="@dimen/margin_between_edit_texts"
+                android:layout_marginEnd="@dimen/login_button_margins"
+                android:background="@drawable/rounded_background_white_1dp_with_grey_borders"
+                android:ems="10"
+                android:hint="@string/email"
+                android:maxLength="40"
+                android:inputType="textEmailAddress"
+                android:paddingStart="@dimen/edit_text_start_padding"
+                android:paddingEnd="5dp"
+                android:textColor="@color/black_russian"
+                android:textColorHint="@color/heather"
+                android:textSize="@dimen/edit_txt_text_size"
+                app:layout_constraintVertical_bias="0.3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/secondNameEditText"/>
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/passwordEditText"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/login_button_height"
+                android:layout_marginStart="@dimen/login_button_margins"
+                android:layout_marginTop="@dimen/margin_between_edit_texts"
+                android:layout_marginEnd="@dimen/login_button_margins"
+                android:background="@drawable/rounded_background_white_1dp_with_grey_borders"
+                android:hint="@string/password"
+                android:maxLength="20"
+                android:inputType="textPassword"
+                android:paddingStart="@dimen/edit_text_start_padding"
+                android:paddingEnd="60dp"
+                android:textColor="@color/black_russian"
+                android:textColorHint="@color/heather"
+                android:textSize="@dimen/edit_txt_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnRegister"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/login_button_height"
+                android:layout_marginStart="@dimen/login_button_margins"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="@dimen/login_button_margins"
+                android:background="@drawable/rounded_background_white_3dp_with_black_borders"
+                android:onClick="onRegisterButtonClick"
+                android:text="@string/register"
+                android:textAllCaps="false"
+                android:textColor="@color/black_russian"
+                android:textSize="@dimen/button_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+
+            <TextView
+                android:id="@+id/textErrorOnRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="error"
+                android:visibility="gone"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/yellow"
+                android:textSize="@dimen/error_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</layout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+                <!--  Margins  -->
+    <dimen name="login_button_height">60dp</dimen>
+    <dimen name="login_button_margins">16dp</dimen>
+
+    <dimen name="title_text_side_margins">36dp</dimen>
+    <dimen name="desc_text_side_margins">32dp</dimen>
+    <dimen name="edit_text_start_padding">24dp</dimen>
+    <dimen name="margin_between_edit_texts">20dp</dimen>
+
+         <!--  Main Menu -->
+    <dimen name="header_layout_side_margins">7dp</dimen>
+
+                    <!--  Text Sizes  -->
+    <dimen name="button_text_size">24sp</dimen>
+    <dimen name="edit_txt_text_size">16sp</dimen>
+    <dimen name="header_first_text_size">28sp</dimen>
+    <dimen name="header_second_text_size">16sp</dimen>
+    <dimen name="error_text_size">13sp</dimen>
+    <dimen name="app_bar_title_text_size">20sp</dimen>
+</resources>

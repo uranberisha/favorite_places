@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Favorite Places</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="login_view_header">Login</string>
+    <string name="todo">TODO</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+
+    <string name="error_in_login">Error in Login</string>
+    <string name="error_in_register">Error in Register</string>
+    <string name="please_fill_first_name">Please fill first name</string>
+    <string name="please_fill_last_name">Please fill last name</string>
+    <string name="please_fill_email">Please fill email</string>
+    <string name="please_fill_password">Please fill password</string>
+    <string name="invalid_email_message">Please enter valid email</string>
+    <string name="invalid_password_message">Please enter valid password</string>
+</resources>
