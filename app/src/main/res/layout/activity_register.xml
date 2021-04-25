@@ -53,6 +53,7 @@
                 android:layout_marginEnd="@dimen/login_button_margins"
                 android:background="@drawable/rounded_background_white_1dp_with_grey_borders"
                 android:maxLength="40"
+                android:visibility="gone"
                 android:hint="@string/first_name"
                 android:inputType="textCapSentences"
                 android:paddingStart="@dimen/edit_text_start_padding"
@@ -71,6 +72,7 @@
                 android:layout_marginStart="@dimen/login_button_margins"
                 android:layout_marginTop="@dimen/margin_between_edit_texts"
                 android:layout_marginEnd="@dimen/login_button_margins"
+                android:visibility="gone"
                 android:background="@drawable/rounded_background_white_1dp_with_grey_borders"
                 android:ems="10"
                 android:maxLength="40"
@@ -105,7 +107,8 @@
                 app:layout_constraintVertical_bias="0.3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/secondNameEditText"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
 
             <androidx.appcompat.widget.AppCompatEditText

@@ -1,9 +1,9 @@
 package com.urani.favoriteplaces.ui.auth
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.urani.favoriteplaces.MainActivity
@@ -22,9 +22,9 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
     }
+
 
     fun onLoginButtonClick(view: View) {
         if (validateFields()){
@@ -36,7 +36,6 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener { task->
                     binding.progressBar.visibility = View.GONE
                     if (task.isSuccessful) {
-                        toast("Success Login")
                         task.result?.user?.let {
                             val firebaseUser  = it
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)

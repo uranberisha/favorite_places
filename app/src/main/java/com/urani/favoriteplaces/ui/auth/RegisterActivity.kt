@@ -28,8 +28,8 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register)
 
-        binding.firstNameEditText.textPersonName()
-        binding.secondNameEditText.textPersonName()
+//        binding.firstNameEditText.textPersonName()
+//        binding.secondNameEditText.textPersonName()
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -49,19 +49,29 @@ class RegisterActivity : AppCompatActivity() {
             val password = binding.passwordEditText.text.toString()
 
             mAuth.createUserWithEmailAndPassword(
-                    email,
-                    password
+                email,
+                password
             )
-                    .addOnCompleteListener { task ->
-                        binding.progressBar.visibility = View.GONE
-                        if (task.isSuccessful) {
-                            toast("created account successfully !")
-                            addNewUser()
+                .addOnCompleteListener { task ->
+                    binding.progressBar.visibility = View.GONE
+                    if (task.isSuccessful) {
+                        toast("created account successfully !")
 
-                        } else {
-                            toast("failed to Authenticate !")
+                        //addNewUser()
+                        task.result?.user?.let {
+                            val firebaseUser  = it
+                            val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            intent.putExtra("user_id", firebaseUser.uid)
+                            intent.putExtra("email", email)
+                            startActivity(intent)
+                            finish()
                         }
+
+                    } else {
+                        toast("failed to Authenticate !")
                     }
+                }
 
 
         } else {
@@ -70,47 +80,45 @@ class RegisterActivity : AppCompatActivity() {
     }
 
 
-    private fun addNewUser() {
-
-        binding.btnRegister.isEnabled = true
-        //add data to the "users" node
-        val userId = FirebaseAuth.getInstance().currentUser.uid
-        val mUser = User(binding.firstNameEditText.text.toString().trim(),
-                binding.secondNameEditText.text.toString().trim(),
-                userId)
-
-        database = Firebase.database.reference
-
-        //insert into users node
-        val email = binding.emailEditText.text.toString().trim()
-        database.child(getString(R.string.node_users))
-                .child(userId)
-                .setValue(mUser)
-                .addOnSuccessListener {
-                    val intent = Intent(this@RegisterActivity, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    intent.putExtra("user_id", userId)
-                    intent.putExtra("email", email)
-                    startActivity(intent)
-                    finish()
-                }
-                .addOnFailureListener {
-                    val a = it
-                }
-
-    }
+//    private fun addNewUser() {
+//        val userId = FirebaseAuth.getInstance().currentUser.uid
+//        val mUser = User(
+//            binding.firstNameEditText.text.toString().trim(),
+//            binding.secondNameEditText.text.toString().trim(),
+//            userId
+//        )
+//
+//        database = Firebase.database.reference
+//
+//        //insert into users node
+//        val email = binding.emailEditText.text.toString().trim()
+//        database.child(getString(R.string.node_users))
+//            .child(userId)
+//            .setValue(mUser)
+//            .addOnSuccessListener {
+//                val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+//                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                intent.putExtra("user_id", userId)
+//                intent.putExtra("email", email)
+//                startActivity(intent)
+//                finish()
+//            }
+//            .addOnFailureListener {
+//            }
+//
+//    }
 
 
     private fun validateFields(): Boolean {
         val errorArray: MutableList<String> = ArrayList()
 
-        if (!Utils.validateField(binding.firstNameEditText)) {
-            errorArray.add(getString(R.string.please_fill_first_name))
-        }
-
-        if (!Utils.validateField(binding.secondNameEditText)) {
-            errorArray.add(getString(R.string.please_fill_last_name))
-        }
+//        if (!Utils.validateField(binding.firstNameEditText)) {
+//            errorArray.add(getString(R.string.please_fill_first_name))
+//        }
+//
+//        if (!Utils.validateField(binding.secondNameEditText)) {
+//            errorArray.add(getString(R.string.please_fill_last_name))
+//        }
 
         if (!Utils.validateField(binding.emailEditText)) {
             errorArray.add(getString(R.string.please_fill_email))
