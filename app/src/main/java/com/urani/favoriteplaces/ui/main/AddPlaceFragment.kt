@@ -2,9 +2,8 @@ package com.urani.favoriteplaces.ui.main
 
 import android.Manifest
 import android.app.Activity
-import android.content.ContentValues
-import android.content.Context
-import android.content.Intent
+import android.content.*
+import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -15,6 +14,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.URLUtil
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.urani.favoriteplaces.R
 import com.urani.favoriteplaces.databinding.FragmentAddPlaceBinding
+import com.urani.favoriteplaces.extension.visible
 import com.urani.favoriteplaces.utils.BitmapUtil
 import com.urani.favoriteplaces.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,6 +38,9 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.net.HttpURLConnection
+import java.net.MalformedURLException
+import java.net.URL
 
 
 @AndroidEntryPoint
@@ -60,8 +64,9 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
     private lateinit var mapFragment: SupportMapFragment
 
     private lateinit var values: ContentValues
-    private lateinit var imageUri: Uri
-    private lateinit var imageBitmap: Bitmap
+    private var imageUri: Uri? = null
+    private var imageBitmap: Bitmap? = null
+    private lateinit var clipboard:ClipboardManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,6 +76,8 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_add_place, container, false)
         binding.fragment = this
+
+        clipboard = mContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
 
         return binding.root
@@ -97,6 +104,52 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
     }
 
     fun onPasteLinkClicked(view: View?) {
+        clipboard.primaryClipDescription?.let { it->
+            if (it.hasMimeType(MIMETYPE_TEXT_PLAIN)){
+                val mediaURL = clipboard.primaryClip?.getItemAt(0)?.text.toString()
+
+                if (URLUtil.isValidUrl(mediaURL)){
+                    binding.buttonPasteLink.isEnabled = false
+                    binding.linkTextView.visible()
+                    binding.linkTextView.text = clipboard.primaryClip?.getItemAt(0)?.text
+
+                    Glide.with(mContext)
+                        .load(mediaURL)
+                        .timeout(10000)
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                binding.buttonPasteLink.isEnabled = true
+                                return false
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: com.bumptech.glide.load.DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+
+                                binding.buttonPasteLink.isEnabled = true
+                                imageBitmap = (resource as BitmapDrawable).bitmap
+                                imageUri = null
+                                return false
+                            }
+                        })
+                        .into(binding.placeImage)
+                }
+
+            }
+        }
+
+
+//        binding.linkTextView.visible()
+//        binding.linkTextView.text = clipboard.primaryClip?.getItemAt(0)?.text
 
     }
 
@@ -189,7 +242,10 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
 
                 PICK_IMAGE_CAMERA -> {
                     if (resultCode == Activity.RESULT_OK) {
-                        loadImageFromCamera(imageUri)
+                        imageUri?.let {
+                            loadImageFromCamera(it)
+                            imageBitmap = null
+                        }
                     }
                 }
             }
@@ -199,7 +255,6 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
     }
 
     private fun loadImageFromCamera(uri: Uri){
-
         Glide.with(mContext)
             .load(uri)
             .timeout(10000)
@@ -247,6 +302,8 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
                     100,
                     stream
                 )
+            }else{
+                return
             }
 
             stream.flush()
