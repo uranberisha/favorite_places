@@ -1,9 +1,12 @@
 package com.urani.favoriteplaces.utils
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.core.app.ActivityCompat
 import com.urani.favoriteplaces.R
 import com.urani.favoriteplaces.extension.clearError
 import java.util.regex.Pattern
@@ -58,6 +61,17 @@ object Utils {
         val imm =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun checkCameraAndStoragePermissions(context: Context): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
 

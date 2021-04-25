@@ -28,4 +28,6 @@
     <string name="paste_link">Paste Link</string>
     <string name="delete_place">Delete Place</string>
     <string name="log_out">Log Out</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_option">Select Option</string>
 </resources>
