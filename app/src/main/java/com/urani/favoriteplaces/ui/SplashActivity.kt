@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.urani.favoriteplaces.MainActivity
+import com.urani.favoriteplaces.ui.main.MainActivity
 import com.urani.favoriteplaces.ui.auth.LoginActivity
 
 class SplashActivity : AppCompatActivity() {

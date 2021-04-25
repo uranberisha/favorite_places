@@ -7,13 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import com.urani.favoriteplaces.MainActivity
+import com.urani.favoriteplaces.ui.main.MainActivity
 import com.urani.favoriteplaces.R
 import com.urani.favoriteplaces.databinding.ActivityRegisterBinding
 import com.urani.favoriteplaces.extension.*
-import com.urani.favoriteplaces.models.User
 import com.urani.favoriteplaces.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 

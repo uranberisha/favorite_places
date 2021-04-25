@@ -6,7 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.FirebaseAuth
-import com.urani.favoriteplaces.MainActivity
+import com.urani.favoriteplaces.ui.main.MainActivity
 import com.urani.favoriteplaces.R
 import com.urani.favoriteplaces.databinding.ActivityLoginBinding
 import com.urani.favoriteplaces.extension.gone
