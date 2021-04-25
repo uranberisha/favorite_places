@@ -6,11 +6,11 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
@@ -30,9 +30,13 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.urani.favoriteplaces.R
 import com.urani.favoriteplaces.databinding.FragmentAddPlaceBinding
+import com.urani.favoriteplaces.utils.BitmapUtil
 import com.urani.favoriteplaces.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
 
 
 @AndroidEntryPoint
@@ -185,10 +189,7 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
 
                 PICK_IMAGE_CAMERA -> {
                     if (resultCode == Activity.RESULT_OK) {
-                        val path = imageUri.path
-                        loadImage(imageUri)
-
-
+                        loadImageFromCamera(imageUri)
                     }
                 }
             }
@@ -197,7 +198,7 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
         }
     }
 
-    private fun loadImage(uri: Uri){
+    private fun loadImageFromCamera(uri: Uri){
 
         Glide.with(mContext)
             .load(uri)
@@ -224,6 +225,47 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
                 }
             })
             .into(binding.placeImage)
+    }
+
+    private fun saveImage(imageUri: Uri?, imageBitmap: Bitmap?){
+        val path: String = Environment.getExternalStorageDirectory().toString()
+        val file = File(path, "UniqueFileName" + ".jpg")
+
+        try {
+            var stream: OutputStream? = null
+            stream = FileOutputStream(file)
+
+            if (imageBitmap != null){
+                imageBitmap.compress(
+                    Bitmap.CompressFormat.JPEG,
+                    100,
+                    stream
+                )
+            }else if (imageUri!= null){
+                BitmapUtil.getBitmapFromURi(mContext, imageUri)?.compress(
+                    Bitmap.CompressFormat.JPEG,
+                    100,
+                    stream
+                )
+            }
+
+            stream.flush()
+            stream.close()
+
+        } catch (e: IOException) // Catch the exception
+        {
+            e.printStackTrace()
+        }
+
+        // Parse the saved image path to uri
+        val savedImageURI = Uri.parse(file.absolutePath)
+
+        // Display the saved image to ImageView
+
+        // Display the saved image to ImageView
+        binding.placeImage.setImageURI(savedImageURI)
+
+        //todo save place image file.absolutePath in local db
     }
 
 
