@@ -16,11 +16,14 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.urani.favoriteplaces.R
+import com.urani.favoriteplaces.customDialogs.ConfirmDialog
 import com.urani.favoriteplaces.database.entities.Place
 import com.urani.favoriteplaces.databinding.FragmentMainBinding
 import com.urani.favoriteplaces.ui.main.adapter.PlacesAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_main.*
 
 @AndroidEntryPoint
 class MainFragment : Fragment(), OnMapReadyCallback{
@@ -87,7 +90,13 @@ class MainFragment : Fragment(), OnMapReadyCallback{
 
 
     fun onLogOutButtonClick(view: View?) {
-
+        ConfirmDialog(
+            mContext,
+            getString(R.string.log_out),
+            getString(R.string.are_you_sure_log_out)
+        ) {
+            FirebaseAuth.getInstance().signOut();
+        }.show()
     }
 
     fun onAddPostButtonClick(view: View?) {

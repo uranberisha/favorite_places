@@ -1,7 +1,10 @@
 package com.urani.favoriteplaces.ui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.urani.favoriteplaces.ui.main.MainActivity
@@ -12,9 +15,7 @@ class SplashActivity : AppCompatActivity() {
     //Firebase
     private lateinit var mAuthListener: FirebaseAuth.AuthStateListener
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
         mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             val user = firebaseAuth.currentUser
             if (user != null) {
@@ -32,6 +33,7 @@ class SplashActivity : AppCompatActivity() {
             }
             //
         }
+        return super.onCreateView(name, context, attrs)
     }
 
     override fun onStart() {
