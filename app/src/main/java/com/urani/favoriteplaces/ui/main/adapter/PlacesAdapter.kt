@@ -2,6 +2,7 @@ package com.urani.favoriteplaces.ui.main.adapter
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -34,11 +35,11 @@ class PlacesAdapter(
             DataBindingUtil.inflate(layoutInflater, R.layout.place_item, parent, false)
 
         //todo check if in list size is 1
-        if (placesList.size == 1) {
-            val layoutParams: ViewGroup.LayoutParams = binding.root.layoutParams
-            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-            binding.root.layoutParams = layoutParams
-        }
+//        if (placesList.size == 1) {
+//            val layoutParams: ViewGroup.LayoutParams = binding.root.layoutParams
+//            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+//            binding.root.layoutParams = layoutParams
+//        }
 
         return PlacesViewHolder(binding)
 
@@ -51,33 +52,8 @@ class PlacesAdapter(
     override fun onBindViewHolder(holder: PlacesViewHolder, position: Int) {
         val placeItem = placesList[position]
 
-        Glide.with(context)
-            .load(placeItem.imagePath)
-            .timeout(10000)
-            .placeholder( R.color.transparent)
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return false
-                }
-
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: com.bumptech.glide.load.DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return false
-                }
-            })
-            .signature(ObjectKey(placeItem.imagePath))
-            .into(
-                holder.binding.imageView)
+        val savedImageURI = Uri.parse(placeItem.imagePath)
+        holder.binding.imageView.setImageURI(savedImageURI)
 
         holder.itemView.setOnClickListener {
             callback.invoke(placeItem)
@@ -91,7 +67,7 @@ class PlacesAdapter(
     }
 
     fun onAddPlaces(list: MutableList<Place>) {
-        this.placesList.addAll(list)
+        this.placesList = list
         notifyDataSetChanged()
     }
 

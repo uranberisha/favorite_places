@@ -29,6 +29,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.urani.favoriteplaces.R
+import com.urani.favoriteplaces.database.entities.Place
 import com.urani.favoriteplaces.databinding.FragmentAddPlaceBinding
 import com.urani.favoriteplaces.extension.visible
 import com.urani.favoriteplaces.utils.BitmapUtil
@@ -38,9 +39,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -62,6 +61,8 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
     private lateinit var googleMap: GoogleMap
     val zoomLevel = 13.0f
     private lateinit var mapFragment: SupportMapFragment
+    private var mLatitude: Double? = null
+    private var mLongitude: Double? = null
 
     private lateinit var values: ContentValues
     private var imageUri: Uri? = null
@@ -88,6 +89,13 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
     }
 
     fun onEditPlaceButtonClick(view: View?) {
+        if (false){
+
+        }else{
+            if (mLatitude!=null && mLongitude !=null &&(imageUri != null || imageBitmap != null)){
+                addFavoritePlace()
+            }
+        }
 
     }
 
@@ -147,10 +155,6 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
             }
         }
 
-
-//        binding.linkTextView.visible()
-//        binding.linkTextView.text = clipboard.primaryClip?.getItemAt(0)?.text
-
     }
 
     fun onDeleteButtonClick(view: View?) {
@@ -180,6 +184,8 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
         googleMap.clear()
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng))
         googleMap.addMarker(MarkerOptions().position(latLng!!))
+        mLatitude = latLng.latitude
+        mLongitude = latLng.longitude
         zoomMapsToInitialState(latLng)
     }
 
@@ -282,22 +288,23 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
             .into(binding.placeImage)
     }
 
-    private fun saveImage(imageUri: Uri?, imageBitmap: Bitmap?){
+    private fun addFavoritePlace(){
         val path: String = Environment.getExternalStorageDirectory().toString()
-        val file = File(path, "UniqueFileName" + ".jpg")
+        val filename: String = UUID.randomUUID().toString()
+        val file = File(path, "$filename.jpg")
 
         try {
             var stream: OutputStream? = null
             stream = FileOutputStream(file)
 
             if (imageBitmap != null){
-                imageBitmap.compress(
+                imageBitmap!!.compress(
                     Bitmap.CompressFormat.JPEG,
                     100,
                     stream
                 )
             }else if (imageUri!= null){
-                BitmapUtil.getBitmapFromURi(mContext, imageUri)?.compress(
+                BitmapUtil.getBitmapFromURi(mContext, imageUri!!)?.compress(
                     Bitmap.CompressFormat.JPEG,
                     100,
                     stream
@@ -314,15 +321,10 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
             e.printStackTrace()
         }
 
-        // Parse the saved image path to uri
-        val savedImageURI = Uri.parse(file.absolutePath)
 
-        // Display the saved image to ImageView
-
-        // Display the saved image to ImageView
-        binding.placeImage.setImageURI(savedImageURI)
-
-        //todo save place image file.absolutePath in local db
+        val place = Place(0, mLatitude!!, mLongitude!!, file.absolutePath)
+        viewModel.insertPlace(place)
+        onBackButtonClick(binding.root)
     }
 
 

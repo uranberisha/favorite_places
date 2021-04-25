@@ -18,15 +18,13 @@ constructor(
 ) : ViewModel() {
 
 
-   fun insert(place: Place) {
+   fun insertPlace(place: Place) {
       viewModelScope.launch {
          placeRepository.insert(place)
       }
    }
 
-
-
-   fun update(place: Place) {
+   fun updatePlace(place: Place) {
       viewModelScope.launch {
          placeRepository.update(place)
       }
@@ -36,7 +34,7 @@ constructor(
       return placeRepository.getAllPlaces()
    }
 
-   fun deleteAll() {
+   fun deleteAllPlaces() {
       viewModelScope.launch {
          placeRepository.deleteAll()
       }

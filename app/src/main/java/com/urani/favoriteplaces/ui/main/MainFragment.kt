@@ -57,11 +57,7 @@ class MainFragment : Fragment(), OnMapReadyCallback{
 
         binding.groupsRecyclerView.adapter = placesAdapter
 
-//        val place1 = Place(0,42.6697152, 21.1440927, "https://dev-youlo.lb.noexislab.cloud/images/099a5f85-da3d-4dd1-a37d-cb5332d587d7.jpeg")
-//        viewModel.insert(place1)
-//
-//        val place2= Place(0,42.657152, 21.1340927, "https://dev-youlo.lb.noexislab.cloud/images/35602364-6a1e-40de-9044-93664c4b0f52.jpeg")
-//        viewModel.insert(place2)
+        //iewModel.deleteAllPlaces()
 
         observerLiveData()
 
