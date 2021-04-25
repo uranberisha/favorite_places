@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.urani.favoriteplaces.R
 import com.urani.favoriteplaces.database.entities.Place
 import com.urani.favoriteplaces.databinding.FragmentMainBinding
+import com.urani.favoriteplaces.ui.main.adapter.PlacesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,6 +35,7 @@ class MainFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClickLis
     private lateinit var mContext: Context
 
     lateinit var allFavoritePlaces: List<Place>
+    private lateinit var placesAdapter: PlacesAdapter
 
     override fun onAttach(context: Context) {
         mContext = context
@@ -50,13 +52,18 @@ class MainFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClickLis
             DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
         binding.fragment = this
 
+        placesAdapter =
+            PlacesAdapter(mContext, ArrayList()) { callback ->
+                zoomMapsToInitialState(LatLng(callback.latitude, callback.latitude))
+            }
+
+        binding.groupsRecyclerView.adapter = placesAdapter
+
 //        val place1 = Place(0,42.6697152, 21.1440927, "https://dev-youlo.lb.noexislab.cloud/images/35602364-6a1e-40de-9044-93664c4b0f52.jpeg")
 //        viewModel.insert(place1)
 //
 //        val place2= Place(0,42.657152, 21.1340927, "https://dev-youlo.lb.noexislab.cloud/images/35602364-6a1e-40de-9044-93664c4b0f52.jpeg")
 //        viewModel.insert(place2)
-
-        viewModel.deleteAll()
 
         observerLiveData()
 
@@ -65,7 +72,11 @@ class MainFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClickLis
 
     private fun observerLiveData() {
         viewModel.getAllFavoritePlaces().observe(viewLifecycleOwner, Observer { lisOffPlaces ->
-            val a = lisOffPlaces
+            if (lisOffPlaces.isNullOrEmpty()) {
+                placesAdapter.onAddPlaces(ArrayList())
+            } else {
+                placesAdapter.onAddPlaces(lisOffPlaces as MutableList<Place>)
+            }
         })
 
     }
@@ -75,19 +86,23 @@ class MainFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClickLis
         map?.let {
             googleMap = map
             googleMap.setOnMapLongClickListener(this)
-            googleMap.uiSettings.isZoomControlsEnabled = true
 
-            zoomMapsToInitialState(LatLng(42.6697152, 21.1440927))
+            googleMap.moveCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    LatLng(42.6697152, 21.1440927),
+                    zoomLevel
+                )
+            )
 
 
         }
     }
 
     override fun onMapLongClick(latLng: LatLng?) {
-        googleMap.clear()
-        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng))
-        googleMap.addMarker(MarkerOptions().position(latLng!!))
-        zoomMapsToInitialState(latLng)
+//        googleMap.clear()
+//        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+//        googleMap.addMarker(MarkerOptions().position(latLng!!))
+//        zoomMapsToInitialState(latLng)
     }
 
     private fun zoomMapsToInitialState(latLng: LatLng) {
@@ -102,10 +117,9 @@ class MainFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClickLis
     }
 
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-                mapFragment = (childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?)!!
+        mapFragment = (childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?)!!
         mapFragment.getMapAsync(this)
     }
 

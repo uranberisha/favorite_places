@@ -40,6 +40,25 @@ tools:context=".ui.main.MainFragment">
         app:layout_constraintStart_toStartOf="@+id/map"
         app:layout_constraintTop_toTopOf="@+id/map" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/groups_recycler_view"
+        android:visibility="visible"
+        android:layout_marginTop="26dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="true"
+        android:overScrollMode="never"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="5"
+        android:clipToPadding="false"
+        android:paddingEnd="7dp"
+        android:paddingStart="0dp"
+        tools:listitem="@layout/place_item"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
