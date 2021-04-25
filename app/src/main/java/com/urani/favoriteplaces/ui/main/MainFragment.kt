@@ -81,7 +81,7 @@ class MainFragment : Fragment(), OnMapReadyCallback{
 
 
 
-    fun onMenuButtonClick(view: View?) {
+    fun onLogOutButtonClick(view: View?) {
 
     }
 

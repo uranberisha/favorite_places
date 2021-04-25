@@ -1,116 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-tools:context=".ui.main.MainFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.main.MainFragment">
 
     <data>
-        <variable name="fragment"
-            type="com.urani.favoriteplaces.ui.main.MainFragment"/>
+
+        <variable
+            name="fragment"
+            type="com.urani.favoriteplaces.ui.main.MainFragment" />
     </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <RelativeLayout
-        android:id="@+id/appBar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/imgMenu"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:onClick="@{fragment::onMenuButtonClick}"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="24dp"
-            android:contentDescription="@string/todo"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/ic_three_lines" />
-
-        <TextView
-            android:id="@+id/textTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:textStyle="bold"
-            android:text="@string/app_name"
-            android:textColor="@color/nero"
-            android:textSize="16sp" />
+        android:layout_height="match_parent">
 
 
-        <TextView
-            android:id="@+id/add_post_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/todo"
-            android:onClick="@{fragment::onAddPostButtonClick}"
-            android:layout_marginEnd="16dp"
-            android:text="@string/add_place"
-            android:textColor="@color/nero"
-            android:textSize="16sp"/>
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <View
+        <RelativeLayout
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray75"
-            android:layout_alignParentBottom="true"/>
-    </RelativeLayout>
-
-    <ProgressBar
-        android:id="@+id/mapProgressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:indeterminateTint="@color/purple_700"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/map"
-        app:layout_constraintEnd_toEndOf="@+id/map"
-        app:layout_constraintStart_toStartOf="@+id/map"
-        app:layout_constraintTop_toTopOf="@+id/map" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/groups_recycler_view"
-        android:visibility="visible"
-        android:layout_marginTop="26dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="true"
-        android:overScrollMode="never"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="5"
-        android:clipToPadding="false"
-        android:paddingEnd="7dp"
-        android:paddingStart="0dp"
-        tools:listitem="@layout/place_item"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_height="50dp"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/logout_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:onClick="@{fragment::onLogOutButtonClick}"
+                android:padding="10dp"
+                android:text="@string/log_out"
+                android:textColor="@color/nero"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/add_place_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@string/todo"
+                android:drawablePadding="10dp"
+                android:onClick="@{fragment::onAddPostButtonClick}"
+                android:padding="10dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/add_place"
+                android:textColor="@color/nero"
+                android:textSize="16sp"
+                app:drawableEndCompat="@drawable/ic_circle_plus" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/gray75" />
+        </RelativeLayout>
+
+        <ProgressBar
+            android:id="@+id/mapProgressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:indeterminateTint="@color/purple_700"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/map"
+            app:layout_constraintEnd_toEndOf="@+id/map"
+            app:layout_constraintStart_toStartOf="@+id/map"
+            app:layout_constraintTop_toTopOf="@+id/map" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/groups_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="true"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            android:paddingStart="0dp"
+            android:paddingEnd="7dp"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:itemCount="5"
+            tools:listitem="@layout/place_item" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
