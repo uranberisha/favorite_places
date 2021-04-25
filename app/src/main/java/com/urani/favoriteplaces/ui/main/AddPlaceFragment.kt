@@ -45,7 +45,6 @@ import java.io.IOException
 import java.io.OutputStream
 import java.util.*
 
-
 @AndroidEntryPoint
 class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
     private lateinit var binding: FragmentAddPlaceBinding
@@ -91,6 +90,7 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
 
             val savedImageURI = Uri.parse(mPlace!!.imagePath)
             binding.placeImage.setImageURI(savedImageURI)
+            binding.placeImage.visible()
 
         }
 
@@ -174,6 +174,8 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
                                 binding.buttonPasteLink.isEnabled = true
                                 imageBitmap = (resource as BitmapDrawable).bitmap
                                 imageUri = null
+                                binding.editPlace.visible()
+                                binding.placeImage.visible()
                                 return false
                             }
                         })
@@ -213,7 +215,6 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
         }
     }
 
-
     override fun onMapLongClick(latLng: LatLng?) {
         googleMap.clear()
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng))
@@ -221,6 +222,7 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
         mLatitude = latLng.latitude
         mLongitude = latLng.longitude
         zoomMapsToInitialState(latLng)
+        binding.editPlace.visible()
     }
 
     private fun zoomMapsToInitialState(latLng: LatLng) {
@@ -285,6 +287,7 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
                         imageUri?.let {
                             loadImageFromCamera(it)
                             imageBitmap = null
+                            binding.editPlace.visible()
                         }
                     }
                 }
@@ -315,7 +318,7 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
                     dataSource: com.bumptech.glide.load.DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    val bitmap = (resource as BitmapDrawable).bitmap
+                    binding.placeImage.visible()
                     return false
                 }
             })
@@ -331,20 +334,24 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
             var stream: OutputStream? = null
             stream = FileOutputStream(file)
 
-            if (imageBitmap != null) {
-                imageBitmap!!.compress(
-                    Bitmap.CompressFormat.JPEG,
-                    100,
-                    stream
-                )
-            } else if (imageUri != null) {
-                BitmapUtil.getBitmapFromURi(mContext, imageUri!!)?.compress(
-                    Bitmap.CompressFormat.JPEG,
-                    100,
-                    stream
-                )
-            } else {
-                return
+            when {
+                imageBitmap != null -> {
+                    imageBitmap!!.compress(
+                        Bitmap.CompressFormat.JPEG,
+                        100,
+                        stream
+                    )
+                }
+                imageUri != null -> {
+                    BitmapUtil.getBitmapFromURi(mContext, imageUri!!)?.compress(
+                        Bitmap.CompressFormat.JPEG,
+                        100,
+                        stream
+                    )
+                }
+                else -> {
+                    return
+                }
             }
 
             stream.flush()
@@ -367,6 +374,5 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
 
         onBackButtonClick(binding.root)
     }
-
 
 }
