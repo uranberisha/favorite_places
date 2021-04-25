@@ -20,8 +20,8 @@
     <color name="black_russian">#FF07080A</color>
     <color name="heather">#FFB4B5B6</color>
     <color name="vulcan">#FF3A3B3D</color>
-    <color name="vulcan_transparent_with_25_opacity">#4D3A3B3D</color>
     <color name="matterhorn">#FF4E4E4E</color>
     <color name="yellow">#FFE3B911</color>
+    <color name="red">#F44336</color>
     <color name="old_silver">#FF838485</color>
 </resources>

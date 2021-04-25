@@ -23,4 +23,8 @@
     <string name="don_t_have_an_account">Don‘t have an account?</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_place">Add Place</string>
+    <string name="take_photo">Take photo</string>
+    <string name="paste_link">Paste Link</string>
+    <string name="delete_place">Delete Place</string>
 </resources>
