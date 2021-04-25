@@ -30,6 +30,12 @@ constructor(
       }
    }
 
+   fun deletePlace(place: Place) {
+      viewModelScope.launch {
+         placeRepository.delete(place)
+      }
+   }
+
    fun getAllFavoritePlaces(): LiveData<List<Place>> {
       return placeRepository.getAllPlaces()
    }

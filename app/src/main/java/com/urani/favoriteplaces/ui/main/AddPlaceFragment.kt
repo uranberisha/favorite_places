@@ -2,8 +2,11 @@ package com.urani.favoriteplaces.ui.main
 
 import android.Manifest
 import android.app.Activity
-import android.content.*
 import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
+import android.content.ClipboardManager
+import android.content.ContentValues
+import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -31,6 +34,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.urani.favoriteplaces.R
 import com.urani.favoriteplaces.database.entities.Place
 import com.urani.favoriteplaces.databinding.FragmentAddPlaceBinding
+import com.urani.favoriteplaces.extension.toast
 import com.urani.favoriteplaces.extension.visible
 import com.urani.favoriteplaces.utils.BitmapUtil
 import com.urani.favoriteplaces.utils.Utils
@@ -59,15 +63,17 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
     }
 
     private lateinit var googleMap: GoogleMap
-    val zoomLevel = 13.0f
+    private val zoomLevel = 13.0f
     private lateinit var mapFragment: SupportMapFragment
+
     private var mLatitude: Double? = null
     private var mLongitude: Double? = null
 
     private lateinit var values: ContentValues
     private var imageUri: Uri? = null
     private var imageBitmap: Bitmap? = null
-    private lateinit var clipboard:ClipboardManager
+    private lateinit var clipboard: ClipboardManager
+    private var mPlace: Place? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,6 +83,16 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_add_place, container, false)
         binding.fragment = this
+
+        mPlace = arguments?.getParcelable<Place>("place")
+
+        if (mPlace != null) {
+            binding.btnDelete.visible()
+
+            val savedImageURI = Uri.parse(mPlace!!.imagePath)
+            binding.placeImage.setImageURI(savedImageURI)
+
+        }
 
         clipboard = mContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
@@ -89,10 +105,22 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
     }
 
     fun onEditPlaceButtonClick(view: View?) {
-        if (false){
+        if (mPlace != null) {
+            if (mLatitude != null && mLongitude != null) {
+                mPlace?.latitude = mLatitude!!
+                mPlace?.longitude = mLongitude!!
+            }
 
-        }else{
-            if (mLatitude!=null && mLongitude !=null &&(imageUri != null || imageBitmap != null)){
+            if (imageUri != null || imageBitmap != null) {
+                addFavoritePlace()
+            }
+
+        } else {
+            if (imageUri == null && imageBitmap == null) {
+                mContext.toast("Please pick an image!")
+            } else if (mLatitude == null || mLongitude == null) {
+                mContext.toast("Please select location!")
+            } else {
                 addFavoritePlace()
             }
         }
@@ -112,11 +140,11 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
     }
 
     fun onPasteLinkClicked(view: View?) {
-        clipboard.primaryClipDescription?.let { it->
-            if (it.hasMimeType(MIMETYPE_TEXT_PLAIN)){
+        clipboard.primaryClipDescription?.let { it ->
+            if (it.hasMimeType(MIMETYPE_TEXT_PLAIN)) {
                 val mediaURL = clipboard.primaryClip?.getItemAt(0)?.text.toString()
 
-                if (URLUtil.isValidUrl(mediaURL)){
+                if (URLUtil.isValidUrl(mediaURL)) {
                     binding.buttonPasteLink.isEnabled = false
                     binding.linkTextView.visible()
                     binding.linkTextView.text = clipboard.primaryClip?.getItemAt(0)?.text
@@ -158,7 +186,10 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
     }
 
     fun onDeleteButtonClick(view: View?) {
-
+        if (mPlace != null) {
+            viewModel.deletePlace(mPlace!!)
+            onBackButtonClick(binding.root)
+        }
     }
 
     override fun onMapReady(map: GoogleMap?) {
@@ -168,13 +199,16 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
             googleMap.setOnMapLongClickListener(this)
             googleMap.uiSettings.isZoomControlsEnabled = true
 
-            googleMap.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    LatLng(42.6697152, 21.1440927),
-                    zoomLevel
+            if (mPlace != null) {
+                zoomMapsToInitialState(LatLng(mPlace!!.latitude, mPlace!!.longitude))
+            } else {
+                googleMap.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(42.6697152, 21.1440927),
+                        zoomLevel
+                    )
                 )
-            )
-
+            }
 
         }
     }
@@ -231,7 +265,7 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
                         startActivityForResult(intent, PICK_IMAGE_CAMERA)
                     }
 
-                    options[item] == getString(R.string.cancel)-> dialog.dismiss()
+                    options[item] == getString(R.string.cancel) -> dialog.dismiss()
                 }
             }
             builder.show()
@@ -260,7 +294,7 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
         }
     }
 
-    private fun loadImageFromCamera(uri: Uri){
+    private fun loadImageFromCamera(uri: Uri) {
         Glide.with(mContext)
             .load(uri)
             .timeout(10000)
@@ -288,7 +322,7 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
             .into(binding.placeImage)
     }
 
-    private fun addFavoritePlace(){
+    private fun addFavoritePlace() {
         val path: String = Environment.getExternalStorageDirectory().toString()
         val filename: String = UUID.randomUUID().toString()
         val file = File(path, "$filename.jpg")
@@ -297,19 +331,19 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
             var stream: OutputStream? = null
             stream = FileOutputStream(file)
 
-            if (imageBitmap != null){
+            if (imageBitmap != null) {
                 imageBitmap!!.compress(
                     Bitmap.CompressFormat.JPEG,
                     100,
                     stream
                 )
-            }else if (imageUri!= null){
+            } else if (imageUri != null) {
                 BitmapUtil.getBitmapFromURi(mContext, imageUri!!)?.compress(
                     Bitmap.CompressFormat.JPEG,
                     100,
                     stream
                 )
-            }else{
+            } else {
                 return
             }
 
@@ -321,9 +355,16 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
             e.printStackTrace()
         }
 
+        if (mPlace != null) {
+            //Edit Place
+            mPlace!!.imagePath = file.absolutePath
+            viewModel.updatePlace(mPlace!!)
+        } else {
+            //Create Place
+            val place = Place(0, mLatitude!!, mLongitude!!, file.absolutePath)
+            viewModel.insertPlace(place)
+        }
 
-        val place = Place(0, mLatitude!!, mLongitude!!, file.absolutePath)
-        viewModel.insertPlace(place)
         onBackButtonClick(binding.root)
     }
 

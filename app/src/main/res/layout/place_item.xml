@@ -26,39 +26,23 @@
                 app:srcCompat="@color/black"/>
         </androidx.cardview.widget.CardView>
 
-<!--        <androidx.appcompat.widget.AppCompatButton-->
-<!--            android:id="@+id/btn_edit"-->
-<!--            style="?android:attr/borderlessButtonStyle"-->
-<!--            android:layout_width="130dp"-->
-<!--            android:layout_height="46dp"-->
-<!--            android:layout_marginTop="24dp"-->
-<!--            android:background="@drawable/rounded_background_white_3dp_with_black_borders"-->
-<!--            android:text="edit"-->
-<!--            android:textAllCaps="false"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="22sp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toStartOf="@+id/btn_delete"-->
-<!--            app:layout_constraintHorizontal_bias="0.5"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/image_card_view" />-->
+        <TextView
+            android:id="@+id/btnEdit"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="90dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/rounded_background_white_3dp_with_black_borders"
+            android:text="@string/edit"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="@+id/image_card_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_card_view" />
 
-
-<!--        <androidx.appcompat.widget.AppCompatButton-->
-<!--            android:id="@+id/btn_delete"-->
-<!--            style="?android:attr/borderlessButtonStyle"-->
-<!--            android:layout_width="130dp"-->
-<!--            android:layout_height="46dp"-->
-<!--            android:background="@drawable/rounded_background_white_3dp_with_black_borders"-->
-<!--            android:text="delete"-->
-<!--            android:textAllCaps="false"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="22sp"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/btn_edit"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.5"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/btn_edit"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/btn_edit" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

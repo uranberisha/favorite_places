@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -51,13 +52,21 @@ class MainFragment : Fragment(), OnMapReadyCallback{
         binding.fragment = this
 
         placesAdapter =
-            PlacesAdapter(mContext, ArrayList()) { callback ->
-                zoomMapsToInitialState(LatLng(callback.latitude, callback.latitude))
+            PlacesAdapter(mContext, ArrayList()) { (place, editClicked) ->
+                if (editClicked){
+                    val addPlaceFragment = AddPlaceFragment()
+                    addPlaceFragment.arguments = bundleOf("place" to place)
+
+                    activity?.supportFragmentManager?.let {
+                        it.beginTransaction().add(R.id.fragment_container_layout, addPlaceFragment)
+                            .addToBackStack(null).commit();
+                    }
+                }else{
+                    zoomMapsToInitialState(LatLng(place.latitude, place.latitude))
+                }
             }
 
         binding.groupsRecyclerView.adapter = placesAdapter
-
-        //iewModel.deleteAllPlaces()
 
         observerLiveData()
 

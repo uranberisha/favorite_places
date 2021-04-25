@@ -16,11 +16,13 @@ import com.urani.favoriteplaces.R
 import com.urani.favoriteplaces.database.entities.Place
 import com.urani.favoriteplaces.databinding.PlaceItemBinding
 import com.urani.favoriteplaces.utils.Utils
+import kotlinx.android.synthetic.main.place_item.view.*
+import java.util.*
 
 class PlacesAdapter(
     val context: Context,
     private var placesList: MutableList<Place>,
-    private val callback: (Place) -> Unit
+    private val callback: (Pair<Place, Boolean>) -> Unit
 ) : RecyclerView.Adapter<PlacesAdapter.PlacesViewHolder>() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var layoutInflater: LayoutInflater
@@ -33,13 +35,6 @@ class PlacesAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlacesViewHolder {
         val binding: PlaceItemBinding =
             DataBindingUtil.inflate(layoutInflater, R.layout.place_item, parent, false)
-
-        //todo check if in list size is 1
-//        if (placesList.size == 1) {
-//            val layoutParams: ViewGroup.LayoutParams = binding.root.layoutParams
-//            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-//            binding.root.layoutParams = layoutParams
-//        }
 
         return PlacesViewHolder(binding)
 
@@ -56,7 +51,11 @@ class PlacesAdapter(
         holder.binding.imageView.setImageURI(savedImageURI)
 
         holder.itemView.setOnClickListener {
-            callback.invoke(placeItem)
+            callback.invoke(Pair(placeItem, false))
+        }
+
+        holder.itemView.btnEdit.setOnClickListener {
+            callback.invoke(Pair(placeItem, true))
         }
     }
 
