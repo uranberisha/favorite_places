@@ -1,18 +1,20 @@
 package com.urani.favoriteplaces.ui.auth
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.FirebaseAuth
-import com.urani.favoriteplaces.MainActivity
 import com.urani.favoriteplaces.R
 import com.urani.favoriteplaces.databinding.ActivityLoginBinding
 import com.urani.favoriteplaces.extension.gone
 import com.urani.favoriteplaces.extension.isEmailValid
 import com.urani.favoriteplaces.extension.toast
 import com.urani.favoriteplaces.extension.visible
+import com.urani.favoriteplaces.ui.main.MainActivity
 import com.urani.favoriteplaces.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,9 +24,13 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+
+
+        binding.registerTxtView.paintFlags =
+            binding.registerTxtView.paintFlags or Paint.UNDERLINE_TEXT_FLAG
     }
+
 
     fun onLoginButtonClick(view: View) {
         if (validateFields()){
@@ -36,19 +42,22 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener { task->
                     binding.progressBar.visibility = View.GONE
                     if (task.isSuccessful) {
-                        toast("Success Login")
                         task.result?.user?.let {
                             val firebaseUser  = it
-                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            intent.putExtra("user_id", firebaseUser.uid)
-                            intent.putExtra("email", email)
-                            startActivity(intent)
-                            finish()
+                            if (firebaseUser.isEmailVerified){
+                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                startActivity(intent)
+                                finish()
+                            }else{
+                                toast(getString(R.string.email_is_not_verified))
+                                FirebaseAuth.getInstance().signOut()
+                            }
+
                         }
 
                     } else {
-                        toast("failed to Authenticate !")
+                        toast(getString(R.string.failed_to_authenticate))
                     }
                 }
         }

@@ -23,14 +23,14 @@ tools:context=".ui.auth.LoginActivity">
             android:id="@+id/headerText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
             android:text="@string/login_view_header"
+            android:textAlignment="center"
             android:textColor="@color/black_russian"
             android:textSize="@dimen/header_first_text_size"
             app:layout_constraintBottom_toTopOf="@+id/emailEditText"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/emailEditText"
@@ -42,18 +42,18 @@ tools:context=".ui.auth.LoginActivity">
             android:background="@drawable/rounded_background_white_1dp_with_grey_borders"
             android:ems="10"
             android:hint="@string/email"
-            android:maxLength="40"
             android:inputType="textEmailAddress"
+            android:maxLength="40"
             android:paddingStart="@dimen/edit_text_start_padding"
             android:paddingEnd="5dp"
             android:textColor="@color/black_russian"
             android:textColorHint="@color/heather"
             android:textSize="@dimen/edit_txt_text_size"
-            app:layout_constraintVertical_bias="0.3"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
 
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -65,8 +65,8 @@ tools:context=".ui.auth.LoginActivity">
             android:layout_marginEnd="@dimen/login_button_margins"
             android:background="@drawable/rounded_background_white_1dp_with_grey_borders"
             android:hint="@string/password"
-            android:maxLength="20"
             android:inputType="textPassword"
+            android:maxLength="20"
             android:paddingStart="@dimen/edit_text_start_padding"
             android:paddingEnd="60dp"
             android:textColor="@color/black_russian"
@@ -101,45 +101,54 @@ tools:context=".ui.auth.LoginActivity">
             android:id="@+id/textErrorOnLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="@string/error_in_login"
             android:layout_marginTop="20dp"
+            android:text="@string/error_in_login"
             android:textColor="@color/yellow"
             android:textSize="@dimen/error_text_size"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnRegister"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/login_button_height"
-            android:layout_marginStart="@dimen/login_button_margins"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="@dimen/login_button_margins"
-            android:layout_marginBottom="30dp"
-            app:layout_constraintVertical_bias="0.0"
-            android:background="@drawable/rounded_background_white_3dp_with_black_borders"
-            android:onClick="onRegisterButtonClick"
-            android:text="@string/register"
-            android:textAllCaps="false"
-            android:textColor="@color/black_russian"
-            android:textSize="@dimen/button_text_size"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/don_t_have_an_account"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/register_txtView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textErrorOnLogin" />
 
+        <TextView
+            android:id="@+id/register_txtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRegisterButtonClick"
+            android:padding="10dp"
+            android:text="@string/register"
+            android:textColor="@color/teal_200"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="@+id/textView" />
+
         <ProgressBar
             android:id="@+id/progress_bar"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
