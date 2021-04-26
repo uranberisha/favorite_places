@@ -4,16 +4,17 @@ import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.FirebaseAuth
-import com.urani.favoriteplaces.ui.main.MainActivity
 import com.urani.favoriteplaces.R
 import com.urani.favoriteplaces.databinding.ActivityLoginBinding
 import com.urani.favoriteplaces.extension.gone
 import com.urani.favoriteplaces.extension.isEmailValid
 import com.urani.favoriteplaces.extension.toast
 import com.urani.favoriteplaces.extension.visible
+import com.urani.favoriteplaces.ui.main.MainActivity
 import com.urani.favoriteplaces.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,12 +44,18 @@ class LoginActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         task.result?.user?.let {
                             val firebaseUser  = it
-                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            intent.putExtra("user_id", firebaseUser.uid)
-                            intent.putExtra("email", email)
-                            startActivity(intent)
-                            finish()
+                            if (firebaseUser.isEmailVerified){
+                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                intent.putExtra("user_id", firebaseUser.uid)
+                                intent.putExtra("email", email)
+                                startActivity(intent)
+                                finish()
+                            }else{
+                                toast("Email is not Verified\nCheck your Inbox")
+                                FirebaseAuth.getInstance().signOut()
+                            }
+
                         }
 
                     } else {

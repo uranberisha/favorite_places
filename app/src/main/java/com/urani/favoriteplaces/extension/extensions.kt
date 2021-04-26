@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 
-fun Context.toast(message: String, length: Int= Toast.LENGTH_SHORT) = Toast.makeText(this, message, length).show()
+fun Context.toast(message: String, length: Int= Toast.LENGTH_LONG) = Toast.makeText(this, message, length).show()
 
 fun View.gone() {
     this.visibility = View.GONE

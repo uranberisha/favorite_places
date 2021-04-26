@@ -3,14 +3,16 @@ package com.urani.favoriteplaces.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
-import com.urani.favoriteplaces.ui.main.MainActivity
 import com.urani.favoriteplaces.R
 import com.urani.favoriteplaces.databinding.ActivityRegisterBinding
 import com.urani.favoriteplaces.extension.*
+import com.urani.favoriteplaces.ui.main.MainActivity
 import com.urani.favoriteplaces.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,17 +54,16 @@ class RegisterActivity : AppCompatActivity() {
                 .addOnCompleteListener { task ->
                     binding.progressBar.visibility = View.GONE
                     if (task.isSuccessful) {
-                        toast("created account successfully !")
-
                         //addNewUser()
                         task.result?.user?.let {
-                            val firebaseUser  = it
-                            val intent = Intent(this@RegisterActivity, MainActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            intent.putExtra("user_id", firebaseUser.uid)
-                            intent.putExtra("email", email)
-                            startActivity(intent)
-                            finish()
+                            sendVerificationEmail(it)
+//                            val firebaseUser  = it
+//                            val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+//                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                            intent.putExtra("user_id", firebaseUser.uid)
+//                            intent.putExtra("email", email)
+//                            startActivity(intent)
+//                            finish()
                         }
 
                     } else {
@@ -104,6 +105,20 @@ class RegisterActivity : AppCompatActivity() {
 //            }
 //
 //    }
+
+    private fun sendVerificationEmail(user:FirebaseUser) {
+        user.sendEmailVerification().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                toast("Confirm link was sent.\n" +
+                        "Check your Inbox")
+                FirebaseAuth.getInstance().signOut();
+                onBackClickButton(binding.root)
+                //finish()
+            } else {
+                toast("couldn't send email")
+            }
+        }
+    }
 
 
     private fun validateFields(): Boolean {
