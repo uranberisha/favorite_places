@@ -95,6 +95,7 @@ class MainFragment : Fragment(), OnMapReadyCallback{
             getString(R.string.log_out),
             getString(R.string.are_you_sure_log_out)
         ) {
+            viewModel.deleteAllPlaces()
             FirebaseAuth.getInstance().signOut();
         }.show()
     }

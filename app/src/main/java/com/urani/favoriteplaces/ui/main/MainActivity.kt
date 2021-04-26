@@ -2,8 +2,6 @@ package com.urani.favoriteplaces.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.FirebaseAuth
@@ -24,9 +22,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-        val userId = intent.getStringExtra("user_id")
-        val email = intent.getStringExtra("email")
 
         setupFirebaseAuth()
 

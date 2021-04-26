@@ -1,9 +1,7 @@
 package com.urani.favoriteplaces.ui.auth
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.FirebaseAuth
@@ -11,8 +9,10 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.urani.favoriteplaces.R
 import com.urani.favoriteplaces.databinding.ActivityRegisterBinding
-import com.urani.favoriteplaces.extension.*
-import com.urani.favoriteplaces.ui.main.MainActivity
+import com.urani.favoriteplaces.extension.gone
+import com.urani.favoriteplaces.extension.isEmailValid
+import com.urani.favoriteplaces.extension.toast
+import com.urani.favoriteplaces.extension.visible
 import com.urani.favoriteplaces.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,10 +26,6 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register)
-
-//        binding.firstNameEditText.textPersonName()
-//        binding.secondNameEditText.textPersonName()
-
         mAuth = FirebaseAuth.getInstance()
 
     }
@@ -54,20 +50,13 @@ class RegisterActivity : AppCompatActivity() {
                 .addOnCompleteListener { task ->
                     binding.progressBar.visibility = View.GONE
                     if (task.isSuccessful) {
-                        //addNewUser()
                         task.result?.user?.let {
+                            //addNewUser()
                             sendVerificationEmail(it)
-//                            val firebaseUser  = it
-//                            val intent = Intent(this@RegisterActivity, MainActivity::class.java)
-//                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//                            intent.putExtra("user_id", firebaseUser.uid)
-//                            intent.putExtra("email", email)
-//                            startActivity(intent)
-//                            finish()
                         }
 
                     } else {
-                        toast("failed to Authenticate !")
+                        toast(getString(R.string.failed_to_authenticate))
                     }
                 }
 
@@ -106,16 +95,15 @@ class RegisterActivity : AppCompatActivity() {
 //
 //    }
 
-    private fun sendVerificationEmail(user:FirebaseUser) {
+    private fun sendVerificationEmail(user: FirebaseUser) {
         user.sendEmailVerification().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                toast("Confirm link was sent.\n" +
-                        "Check your Inbox")
+                toast(getString(R.string.confirm_link_was_sent_message))
                 FirebaseAuth.getInstance().signOut();
                 onBackClickButton(binding.root)
                 //finish()
             } else {
-                toast("couldn't send email")
+                toast(getString(R.string.could_not_sent_email))
             }
         }
     }

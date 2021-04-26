@@ -8,7 +8,6 @@
     <string name="todo">TODO</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
-
     <string name="error_in_login">Error in Login</string>
     <string name="error_in_register">Error in Register</string>
     <string name="please_fill_first_name">Please fill first name</string>
@@ -24,10 +23,16 @@
     <string name="paste_link">Paste Link</string>
     <string name="delete_place">Delete Place</string>
     <string name="log_out">Log Out</string>
-    <string name="are_you_sure_log_out">Are you sure you want to log out?</string>
+    <string name="are_you_sure_log_out">Are you sure you want to log out?\nAll your data will be deleted</string>
     <string name="cancel">Cancel</string>
     <string name="select_option">Select Option</string>
     <string name="edit"><u>Edit</u></string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="confirm_link_was_sent_message">Please check your email to confirm registration!</string>
+    <string name="could_not_sent_email">Couldn‘t send email!</string>
+    <string name="failed_to_authenticate">Failed to Authenticate!</string>
+    <string name="email_is_not_verified">"Email is not Verified\nCheck your Inbox"</string>
+    <string name="please_select_location">"Please select location!"</string>
+    <string name="please_pick_an_image">"Please pick an image!"</string>
 </resources>

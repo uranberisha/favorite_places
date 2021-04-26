@@ -117,9 +117,9 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
 
         } else {
             if (imageUri == null && imageBitmap == null) {
-                mContext.toast("Please pick an image!")
+                mContext.toast(getString(R.string.please_pick_an_image))
             } else if (mLatitude == null || mLongitude == null) {
-                mContext.toast("Please select location!")
+                mContext.toast(getString(R.string.please_select_location))
             } else {
                 addFavoritePlace()
             }
@@ -140,50 +140,57 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
     }
 
     fun onPasteLinkClicked(view: View?) {
-        clipboard.primaryClipDescription?.let { it ->
-            if (it.hasMimeType(MIMETYPE_TEXT_PLAIN)) {
-                val mediaURL = clipboard.primaryClip?.getItemAt(0)?.text.toString()
+        if (Utils.checkCameraAndStoragePermissions(mContext)) {
+            clipboard.primaryClipDescription?.let { it ->
+                if (it.hasMimeType(MIMETYPE_TEXT_PLAIN)) {
+                    val mediaURL = clipboard.primaryClip?.getItemAt(0)?.text.toString()
 
-                if (URLUtil.isValidUrl(mediaURL)) {
-                    binding.buttonPasteLink.isEnabled = false
-                    binding.linkTextView.visible()
-                    binding.linkTextView.text = clipboard.primaryClip?.getItemAt(0)?.text
+                    if (URLUtil.isValidUrl(mediaURL)) {
+                        binding.buttonPasteLink.isEnabled = false
+                        binding.linkTextView.visible()
+                        binding.linkTextView.text = clipboard.primaryClip?.getItemAt(0)?.text
 
-                    Glide.with(mContext)
-                        .load(mediaURL)
-                        .timeout(10000)
-                        .listener(object : RequestListener<Drawable> {
-                            override fun onLoadFailed(
-                                e: GlideException?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                binding.buttonPasteLink.isEnabled = true
-                                return false
-                            }
+                        Glide.with(mContext)
+                            .load(mediaURL)
+                            .timeout(10000)
+                            .listener(object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    binding.buttonPasteLink.isEnabled = true
+                                    return false
+                                }
 
-                            override fun onResourceReady(
-                                resource: Drawable?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                dataSource: com.bumptech.glide.load.DataSource?,
-                                isFirstResource: Boolean
-                            ): Boolean {
+                                override fun onResourceReady(
+                                    resource: Drawable?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    dataSource: com.bumptech.glide.load.DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
 
-                                binding.buttonPasteLink.isEnabled = true
-                                imageBitmap = (resource as BitmapDrawable).bitmap
-                                imageUri = null
-                                binding.editPlace.visible()
-                                binding.placeImage.visible()
-                                return false
-                            }
-                        })
-                        .into(binding.placeImage)
+                                    binding.buttonPasteLink.isEnabled = true
+                                    imageBitmap = (resource as BitmapDrawable).bitmap
+                                    imageUri = null
+                                    binding.editPlace.visible()
+                                    binding.placeImage.visible()
+                                    return false
+                                }
+                            })
+                            .into(binding.placeImage)
+                    }
+
                 }
-
             }
-        }
+        } else
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ), REQUEST_STORAGE_PERMISSION
+            )
 
     }
 

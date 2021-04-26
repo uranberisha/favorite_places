@@ -47,19 +47,17 @@ class LoginActivity : AppCompatActivity() {
                             if (firebaseUser.isEmailVerified){
                                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                intent.putExtra("user_id", firebaseUser.uid)
-                                intent.putExtra("email", email)
                                 startActivity(intent)
                                 finish()
                             }else{
-                                toast("Email is not Verified\nCheck your Inbox")
+                                toast(getString(R.string.email_is_not_verified))
                                 FirebaseAuth.getInstance().signOut()
                             }
 
                         }
 
                     } else {
-                        toast("failed to Authenticate !")
+                        toast(getString(R.string.failed_to_authenticate))
                     }
                 }
         }
