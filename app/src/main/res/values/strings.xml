@@ -22,6 +22,7 @@
     <string name="take_photo">Take photo</string>
     <string name="paste_link">Paste Link</string>
     <string name="delete_place">Delete Place</string>
+    <string name="edit_place">Edit Place</string>
     <string name="log_out">Log Out</string>
     <string name="are_you_sure_log_out">Are you sure you want to log out?\nAll your data will be deleted</string>
     <string name="cancel">Cancel</string>

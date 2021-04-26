@@ -1,6 +1,5 @@
 package com.urani.favoriteplaces.di
 
-import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.urani.favoriteplaces.database.FavPlaceDatabase
@@ -20,17 +19,6 @@ object  DatabaseModule {
     fun provideChannelDao(appDatabase: FavPlaceDatabase): PlaceDao {
         return appDatabase.placeDao()
     }
-
-
-//    @Provides
-//    @Singleton
-//    @JvmStatic
-//    fun providesRoomDatabase(mApplication: Application): FavPlaceDatabase {
-//        return Room.databaseBuilder(mApplication, FavPlaceDatabase::class.java, "favorite-places-db")
-//            .fallbackToDestructiveMigration() // TODO change this later, implement migrations
-//            .build()
-//    }
-
 
     @Provides
     @Singleton

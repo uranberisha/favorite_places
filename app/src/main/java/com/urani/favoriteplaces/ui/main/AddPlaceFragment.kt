@@ -87,6 +87,7 @@ class AddPlaceFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapLongClic
 
         if (mPlace != null) {
             binding.btnDelete.visible()
+            binding.textTitle.text = getString(R.string.edit)
 
             val savedImageURI = Uri.parse(mPlace!!.imagePath)
             binding.placeImage.setImageURI(savedImageURI)
